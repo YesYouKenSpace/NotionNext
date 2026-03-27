@@ -3,6 +3,8 @@
  */
 module.exports = {
   THEME_SWITCH: process.env.NEXT_PUBLIC_THEME_SWITCH || false, // 是否显示切换主题按钮
+  THEME_SWITCH_ALLOWED_THEMES:
+    process.env.NEXT_PUBLIC_THEME_SWITCH_ALLOWED_THEMES || null, // 允许切换的主题列表，英文逗号隔开，例如 'simple,hexo,medium'；为空则显示所有主题
   // Chatbase 是否显示chatbase机器人 https://www.chatbase.co/
   CHATBASE_ID: process.env.NEXT_PUBLIC_CHATBASE_ID || null,
   // WebwhizAI 机器人 @see https://github.com/webwhiz-ai/webwhiz

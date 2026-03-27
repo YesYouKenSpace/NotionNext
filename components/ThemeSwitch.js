@@ -1,8 +1,9 @@
+import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { getQueryParam } from '@/lib/utils'
 import { THEMES } from '@/themes/theme'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import DarkModeButton from './DarkModeButton'
 import { Draggable } from './Draggable'
 import LazyImage from './LazyImage'
@@ -16,6 +17,17 @@ const ThemeSwitch = () => {
   const router = useRouter()
   const currentTheme = getQueryParam(router.asPath, 'theme') || theme
   const [sideBarVisible, setSideBarVisible] = useState(false)
+
+  const allowedThemes = useMemo(() => {
+    const allowed = siteConfig('THEME_SWITCH_ALLOWED_THEMES')
+    if (allowed) {
+      const allowedList = allowed.split(',').map(t => t.trim()).filter(Boolean)
+      if (allowedList.length > 0) {
+        return THEMES?.filter(t => allowedList.includes(t))
+      }
+    }
+    return THEMES
+  }, [THEMES])
 
   const changeTheme = newTheme => {
     const query = router.query
@@ -99,7 +111,7 @@ const ThemeSwitch = () => {
 
         {/* 陈列所有主题 */}
         <div className='grid lg:grid-cols-2 gap-6'>
-          {THEMES?.map(t => {
+          {allowedThemes?.map(t => {
             return (
               <div
                 className='my-6'
